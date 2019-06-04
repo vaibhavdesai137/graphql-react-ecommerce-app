@@ -1,4 +1,4 @@
-# react-graphql-app
+# graphql-react-ecommerce-app
 
 Online eCommerce store using the following:
 
