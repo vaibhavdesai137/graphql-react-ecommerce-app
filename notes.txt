@@ -1,0 +1,10 @@
+
+# Images, boiler plate code downloaded from:
+https://github.com/reedbarger/ecommerce-react-graphql-stripe
+
+$ cd client
+$ npm start
+
+# The react app should now be up at: http://localhost:3000/
+
+

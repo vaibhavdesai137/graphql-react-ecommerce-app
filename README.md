@@ -3,7 +3,7 @@
 Online eCommerce store using the following:
 
 - NodeJS
-- React
+- React (with getsalt library)
 - GraphQL
 - Strapi
 - Stripe
