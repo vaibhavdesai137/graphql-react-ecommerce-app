@@ -52,6 +52,7 @@ https://github.com/reedbarger/ecommerce-react-graphql-stripe
 # Start strapi as: cd server; strapi start
 #   - Create a new user
 #   - Create new "model types"
+#   - Give permissions to "Public" & "Authenticated" to query our mongodb
 #
 # GraphQL
 #   - Install graphql plugin using the marketplace
