@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
-import { Container, Box, Heading, Card, Image, Text, TextField, Button, Mask, IconButton } from 'gestalt';
+import { Container, Box, Heading, Text, TextField, Button } from 'gestalt';
 import ToastMessage from './ToastMessage';
-import { getToken, setToken } from '../utils/helpers';
+import { setToken } from '../utils/helpers';
 import Strapi from 'strapi-sdk-javascript/build/main';
 
 const API_URL = process.env.API_URL || 'http://localhost:1337/';

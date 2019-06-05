@@ -1,6 +1,6 @@
 
 const CART_KEY = 'cart';
-const TOKEN_KEY = 'token';
+const TOKEN_KEY = 'jwt';
 
 export const calculateTotalPrice = (cartItems) => {
     return `${cartItems
@@ -10,7 +10,7 @@ export const calculateTotalPrice = (cartItems) => {
 };
 
 // Cart: save cart
-// value = cartItems = JS object 
+// value = cartItems = JS array 
 // so serialize to string before saving
 export const setCart = (value, cartKey = CART_KEY) => {
     if (localStorage) {
@@ -19,8 +19,8 @@ export const setCart = (value, cartKey = CART_KEY) => {
 };
 
 // Cart: get cart
-// value = cartItems = JS object 
-// so de-serialize before returning since it was saved as string
+// value = cartItems = JS array
+// de-serialize before returning since it was saved as string
 export const getCart = (cartKey = CART_KEY) => {
     if (localStorage && localStorage.getItem(cartKey)) {
         return JSON.parse(localStorage.getItem(cartKey));
@@ -28,9 +28,15 @@ export const getCart = (cartKey = CART_KEY) => {
     return [];
 };
 
+// Cart: clear cart on signout
+export const clearCart = (cartKey = CART_KEY) => {
+    if (localStorage) {
+        localStorage.removeItem(cartKey);
+    }
+};
+
 // Auth: save token
-// value = JWT object = JS object
-// so serialize to string before saving
+// serialize to string before saving
 export const setToken = (value, tokenKey = TOKEN_KEY) => {
     if (localStorage) {
         localStorage.setItem(tokenKey, JSON.stringify(value));
@@ -38,11 +44,17 @@ export const setToken = (value, tokenKey = TOKEN_KEY) => {
 }
 
 // Auth: get token
-// value = JWT object = JS object
-// so de-serialize before returning since it was saved as string
+// de-serialize before returning since it was saved as string
 export const getToken = (tokenKey = TOKEN_KEY) => {
     if (localStorage && localStorage.getItem(tokenKey)) {
         return JSON.parse(localStorage.getItem(tokenKey));
     }
-    return {};
+    return null;
+};
+
+// Auth: clear token on signout
+export const clearToken = (tokenKey = TOKEN_KEY) => {
+    if (localStorage) {
+        localStorage.removeItem(tokenKey);
+    }
 };
