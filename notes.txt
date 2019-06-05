@@ -2,9 +2,25 @@
 # Images, boiler plate code downloaded from:
 https://github.com/reedbarger/ecommerce-react-graphql-stripe
 
-$ cd client
-$ npm start
+# cd client
+# npm install
+# npm start
 
 # The react app should now be up at: http://localhost:3000/
+
+#
+# MongoDB
+# Create MongoDB Atlas account
+# Create a free cluster (use AWS with whatever region)
+# From the cluster, get the connection string
+#
+
+#
+# Strapi
+# npm install -g strapi@alpha
+# strapi new server
+# 
+
+
 
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Box, Text, Heading, Image } from 'gestalt';
+import { Box, Text, Heading } from 'gestalt';
 
 const Navbar = () => (
 
@@ -14,10 +14,7 @@ const Navbar = () => (
         {/* logo/home link */}
         <NavLink activeClassName="active" exact to="/">
             <Box display="flex" alignItems="center">
-                <Box margin={2} height={50} width={50}>
-                    <Image src="./icons/logo.svg" alt="Bummer" naturalWidth={1} naturalHeight={1} />
-                </Box>
-                <Heading size="xs" color="orange">Boring Online Store</Heading>
+                <Heading size="xs" color="orange">\m/ Get Drunk Store \m/</Heading>
             </Box>
         </NavLink>
 

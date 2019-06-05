@@ -7,3 +7,4 @@ Online eCommerce store using the following:
 - GraphQL
 - Strapi
 - Stripe
+- MongoDB (Free mongodb atlas hosted on AWS in N. Oregon)
