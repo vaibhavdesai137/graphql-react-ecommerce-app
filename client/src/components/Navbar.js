@@ -14,7 +14,7 @@ const Navbar = () => (
         {/* logo/home link */}
         <NavLink activeClassName="active" exact to="/">
             <Box display="flex" alignItems="center">
-                <Heading size="xs" color="orange">\m/ Get Drunk Store \m/</Heading>
+                <Heading size="xs" color="orange">Get Drunk Store</Heading>
             </Box>
         </NavLink>
 
