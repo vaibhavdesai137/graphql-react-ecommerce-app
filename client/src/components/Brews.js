@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import Loader from './Loader';
-import { Container, Box, Heading, Card, Image, Text, Button } from 'gestalt';
+import { Link } from 'react-router-dom';
+import { Container, Box, Heading, Card, Image, Text, Button, Mask, IconButton } from 'gestalt';
 import './App.css';
+import { calculateTotalPrice } from '../utils/helpers';
 import Strapi from 'strapi-sdk-javascript/build/main';
 
 const API_URL = process.env.API_URL || 'http://localhost:1337/';
@@ -12,7 +13,7 @@ class Brews extends Component {
   state = {
     brandName: '',
     brews: [],
-    loadingBrews: true
+    cartItems: []
   }
 
   componentDidMount() {
@@ -48,26 +49,51 @@ class Brews extends Component {
 
       this.setState({
         brandName: response.data.brand.name,
-        brews: response.data.brand.brews,
-        loadingBrews: false
+        brews: response.data.brand.brews
       });
 
     } catch (e) {
       console.log(e);
-      this.setState({ loadingBrews: false });
     }
+  }
+
+  // Dumb cart, cannot update quanity
+  addToCart = (brew) => {
+
+    const alreadyAddedToCart = this.state.cartItems.findIndex(item => item._id === brew._id);
+
+    if (alreadyAddedToCart === -1) {
+      const updatedItems = this.state.cartItems.concat({
+        ...brew
+      });
+      this.setState({ cartItems: updatedItems });
+    }
+
+  }
+
+  removeFromCart = (itemId) => {
+    // Get all items from cart except the one that needs to be removed
+    const filteredItems = this.state.cartItems.filter(
+      item => item._id !== itemId
+    );
+    this.setState({ cartItems: filteredItems });
   }
 
   render() {
 
-    const { brandName, brews, loadingBrews } = this.state;
+    const { brandName, brews, cartItems } = this.state;
 
     return (
 
       <Container>
 
-        <Box display="flex" justifyContent="center" marginTop={4} alignItems="start">
-
+        <Box marginTop={4} display="flex" justifyContent="center" alignItems="start"
+          dangerouslySetInlineStyle={{
+            __style: {
+              flexWrap: "wrap-reverse"
+            }
+          }}
+        >
           {/* Brews section */}
           <Box display="flex" direction="column" alignItems="center">
 
@@ -107,7 +133,7 @@ class Brews extends Component {
                         </Box>
                         <Box marginTop={2}>
                           <Text bold size="md">
-                            <Button color="blue" text="Add To Cart" />
+                            <Button onClick={() => this.addToCart(brew)} color="blue" text="Add To Cart" />
                           </Text>
                         </Box>
                       </Box>
@@ -116,10 +142,46 @@ class Brews extends Component {
                 ))
               }
             </Box>
+          </Box>
 
-            {/* Show custom loader when loading */}
-            <Loader show={loadingBrews} />
-
+          {/* Cart */}
+          <Box alignSelf="end" marginTop={2} marginLeft={8}>
+            <Mask shape="rounded" wash>
+              <Box display="flex" alignItems="center" padding={2} direction="column">
+                <Heading align="center" size="sm">Your Cart</Heading>
+                <Box marginTop={2}>
+                  <Text color="gray" italic>{cartItems.length} item(s) in cart</Text>
+                </Box>
+                
+                {/* Cart items */}
+                {cartItems.map(item => (
+                  <Box key={item._id} display="flex" alignItems="center">
+                    <Text>
+                      {item.name} - ${item.price}
+                    </Text>
+                    <IconButton accessibilityLabel="deleteItem" icon="cancel" iconColor="red" size="sm"
+                      onClick={() => this.removeFromCart(item._id)} />
+                  </Box>
+                ))}
+                
+                <Box display="flex" alignItems="center" justifyContent="center" direction="column">
+                  <Box marginTop={2}>
+                    {
+                      cartItems.length === 0 && (
+                        <Text color="red">Cart is empty</Text>
+                      )
+                    }
+                  </Box>
+                  <Text size="sm">------</Text>
+                  <Text size="lg">Total: ${calculateTotalPrice(cartItems)}</Text>
+                  <Box marginTop={2}>
+                    <Text bold>
+                      <Link to="/checkout">Checkout</Link>
+                    </Text>
+                  </Box>
+                </Box>
+              </Box>
+            </Mask>
           </Box>
         </Box>
       </Container>
