@@ -1,0 +1,61 @@
+
+#
+# Collections:
+#  - brand (name, description, image)
+#  - brew (name, description, image, price)
+#
+# Using strapi, we also created a 1:* relationship between "brand" and "brew"
+# i.e. one brand can have many brews
+#
+
+# All beer brands with their image urls
+{
+  brands {
+    _ids
+    name
+    description
+    image {
+      url
+    }
+  }
+}
+
+# Get the name of brand by its id 
+{
+  brand(id: "foo") {
+    name
+  }
+}
+
+# All brews and get the associated brand name
+{
+  brews {
+    _id
+    name
+    description
+    price
+    brand {
+      _id
+      name
+    }
+  }
+}
+
+# Get all brews (with their image urls) for the given brand id
+{
+  brand(id: "5cf75b5d65e1567e9841a74c") {
+    _id
+    name
+    brews {
+      name
+      description
+      price
+    	image {
+        url
+      }
+      brand {
+        _id
+      }
+    }
+  }
+}

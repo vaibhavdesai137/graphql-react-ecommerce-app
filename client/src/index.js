@@ -8,6 +8,7 @@ import App from './components/App';
 import Signup from './components/Signup';
 import Signin from './components/Signin';
 import Checkout from './components/Checkout';
+import Brews from './components/Brews';
 import "gestalt/dist/gestalt.css";
 
 const Root = () => (
@@ -19,6 +20,7 @@ const Root = () => (
                 <Route component={Signup} path="/signup" />
                 <Route component={Signin} path="/signin" />
                 <Route component={Checkout} path="/checkout" />
+                <Route component={Brews} path="/:brandId" />
             </Switch>
         </React.Fragment>
     </Router>

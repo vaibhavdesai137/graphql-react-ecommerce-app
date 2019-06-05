@@ -107,13 +107,16 @@ class App extends Component {
                 >
                   <Box display="flex" alignItems="center" justifyContent="center" direction="column">
                     <Text bold size="xl">{brand.name}</Text>
-                    <Text>{"\n"}</Text>
-                    <Text>{brand.description}</Text>
-                    <Text bold size="md">
-                      <Link to={`/${brand._id}`}>
-                        See Brews
-                    </Link>
-                    </Text>
+                    <Box marginTop={2}>
+                      <Text>{brand.description.substring(0, 75)}...</Text>
+                    </Box>
+                    <Box marginTop={2}>
+                      <Text bold size="md">
+                        <Link to={`/${brand._id}`}>
+                          See Brews
+                      </Link>
+                      </Text>
+                    </Box>
                   </Box>
                 </Card>
               </Box>
