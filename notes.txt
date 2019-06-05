@@ -16,11 +16,47 @@ https://github.com/reedbarger/ecommerce-react-graphql-stripe
 #
 
 #
-# Strapi
-# npm install -g strapi@alpha
-# strapi new server
-# 
-
+# Install strapi as: npm install -g strapi@alpha
+# Create strapi server as: strapi new server
+#       ? Choose your installation type Custom (manual settings)
+#       ? Choose your main database: MongoDB
+#       ? Database name: graphql-react-ecommerce-app-db
+#       ? Host: ecommerce-app-mongodb-cluster-exmhs.mongodb.net
+#       ? +srv connection: true
+#       ? Port (It will be ignored if you enable +srv): 27017
+#       ? Username: atlasadmin
+#       ? Password: **********
+#       ? Authentication database (Maybe "admin" or blank): 
+#       ? Enable SSL connection: true
+#
+#       ⏳ Testing database connection...
+#       It might take a minute, please have a coffee ☕️
+#
+#       The app has been connected to the database successfully!
+#       🏗  Application generation:
+#       ✔ Copy dashboard
+#       ✔ Install plugin settings-manager.
+#       ✔ Install plugin content-type-builder.
+#       ✔ Install plugin content-manager.
+#       ✔ Install plugin users-permissions.
+#       ✔ Install plugin email.
+#       ✔ Install plugin upload.
+#       ✔ Link strapi dependency to the project.
+#       # strapi start
+#
+# Initializing strapi would have created a bunch of collections in our mongodb
+#   - users
+#   - more metadata collections 
+#   - we'll add more for our use case using strapi admin ui (which in turn will create them in mongodb)
+#
+# Start strapi as: cd server; strapi start
+#   - Create a new user
+#   - Create new "model types"
+#
+# GraphQL
+#   - Install graphql plugin using the marketplace
+#   - Play around with graphql at http://localhost:1337/graphql
+#
 
 
 
