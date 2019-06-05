@@ -44,6 +44,9 @@ https://github.com/reedbarger/ecommerce-react-graphql-stripe
 #       ✔ Link strapi dependency to the project.
 #       # strapi start
 #
+#
+# CREATING STRAP SERVER WILL CREATE A NEW FOLDER CALLED "SERVER". ADD IT TO .GITIGNORE
+#
 # Initializing strapi would have created a bunch of collections in our mongodb
 #   - users
 #   - more metadata collections 
