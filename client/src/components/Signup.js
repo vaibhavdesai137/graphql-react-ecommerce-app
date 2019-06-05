@@ -132,7 +132,10 @@ class Signup extends Component {
 
           </form>
         </Box>
+
+        {/* Show alert  when errored */}
         <ToastMessage showToast={showToast} toastMsg={toastMsg} />
+
       </Container>
     );
   }

@@ -77,7 +77,7 @@ class Signin extends Component {
         <Box margin={4} padding={4} shape="rounded" display="flex" justifyContent="center"
           dangerouslySetInlineStyle={{
             __style: {
-              backgroundColor: "#d6a3b1"
+              backgroundColor: "#ebe3da"
             }
           }}
         >
@@ -120,7 +120,10 @@ class Signin extends Component {
 
           </form>
         </Box>
+
+        {/* Show alert  when errored */}
         <ToastMessage showToast={showToast} toastMsg={toastMsg} />
+
       </Container>
     );
   }

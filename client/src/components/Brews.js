@@ -169,9 +169,7 @@ class Brews extends Component {
                 {/* Cart items */}
                 {cartItems.map(item => (
                   <Box key={item._id} display="flex" alignItems="center">
-                    <Text>
-                      {item.name} - ${item.price}
-                    </Text>
+                    <Text>${item.price} - {item.name}</Text>
                     <IconButton accessibilityLabel="deleteItem" icon="cancel" iconColor="red" size="sm"
                       onClick={() => this.removeFromCart(item._id)} />
                   </Box>
@@ -185,8 +183,8 @@ class Brews extends Component {
                       )
                     }
                   </Box>
-                  <Text size="sm">------</Text>
-                  <Text size="lg">Total: ${calculateTotalPrice(cartItems)}</Text>
+                  <Text bold size="sm">------</Text>
+                  <Text size="sm">Total: ${calculateTotalPrice(cartItems)}</Text>
                   <Box marginTop={2}>
                     <Text bold>
                       <Link to="/checkout">Checkout</Link>
