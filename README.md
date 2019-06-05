@@ -1,10 +1,10 @@
-# graphql-react-ecommerce-app
+# graphql-react-beer-store
 
-Online eCommerce store using the following:
+Online eCommerce store to sell beer using the following:
 
 - NodeJS
 - React (with getsalt library)
 - GraphQL
 - Strapi
 - Stripe
-- MongoDB (Free mongodb atlas hosted on AWS in N. Oregon)
+- MongoDB Atlas
