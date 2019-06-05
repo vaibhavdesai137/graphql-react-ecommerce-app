@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Container, Box, Heading, Card, Image, Text, Button, Mask, IconButton } from 'gestalt';
 import './App.css';
-import { calculateTotalPrice } from '../utils/helpers';
+import { calculateTotalPrice, setCart, getCart } from '../utils/helpers';
 import Strapi from 'strapi-sdk-javascript/build/main';
 
 const API_URL = process.env.API_URL || 'http://localhost:1337/';
@@ -47,9 +47,11 @@ class Brews extends Component {
         }
       });
 
+      // Update state and check local stoarge to see if any items were in cart
       this.setState({
         brandName: response.data.brand.name,
-        brews: response.data.brand.brews
+        brews: response.data.brand.brews,
+        cartItems: getCart()
       });
 
     } catch (e) {
@@ -63,20 +65,31 @@ class Brews extends Component {
     const alreadyAddedToCart = this.state.cartItems.findIndex(item => item._id === brew._id);
 
     if (alreadyAddedToCart === -1) {
+
+      // Add the new brew to cart
       const updatedItems = this.state.cartItems.concat({
         ...brew
       });
-      this.setState({ cartItems: updatedItems });
+
+      // Update state and then update local storage
+      this.setState({
+        cartItems: updatedItems
+      }, () => setCart(updatedItems));
     }
 
   }
 
   removeFromCart = (itemId) => {
+
     // Get all items from cart except the one that needs to be removed
     const filteredItems = this.state.cartItems.filter(
       item => item._id !== itemId
     );
-    this.setState({ cartItems: filteredItems });
+
+    // Update state and then update local storage
+    this.setState({
+      cartItems: filteredItems
+    }, () => setCart(filteredItems));
   }
 
   render() {
@@ -152,7 +165,7 @@ class Brews extends Component {
                 <Box marginTop={2}>
                   <Text color="gray" italic>{cartItems.length} item(s) in cart</Text>
                 </Box>
-                
+
                 {/* Cart items */}
                 {cartItems.map(item => (
                   <Box key={item._id} display="flex" alignItems="center">
@@ -163,7 +176,7 @@ class Brews extends Component {
                       onClick={() => this.removeFromCart(item._id)} />
                   </Box>
                 ))}
-                
+
                 <Box display="flex" alignItems="center" justifyContent="center" direction="column">
                   <Box marginTop={2}>
                     {
