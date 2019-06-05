@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import { Container, Box, Heading, Text, TextField, Button } from 'gestalt';
+import { Container, Box, Heading, TextField, Button } from 'gestalt';
 import ToastMessage from './ToastMessage';
 import { setToken } from '../utils/helpers';
 import Strapi from 'strapi-sdk-javascript/build/main';
@@ -92,7 +92,6 @@ class Signin extends Component {
             {/* Sign in form heading */}
             <Box marginBottom={2} display="flex" direction="column" alignItems="center">
               <Heading size="sm" color="midnight">Welcome back!</Heading>
-              <Text italic color="orchid"></Text>
             </Box>
 
             <Box marginTop={10}>
