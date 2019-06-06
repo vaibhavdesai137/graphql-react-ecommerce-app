@@ -257,6 +257,7 @@ class _CheckoutForm extends Component {
 
 const ConfirmationModal = ({ orderProcessing, cartItems, closeModal, handleSubmitOrder }) => (
   <Modal
+    key="modal"
     role="alertdialog"
     size="sm"
     accessibilityCloseLabel="close"

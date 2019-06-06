@@ -64,7 +64,7 @@ https://github.com/reedbarger/ecommerce-react-graphql-stripe
 
 #
 # Stripe install as: 
-# npm install react-stripe-elements
-# npm install stripe
+# cd  client; npm install react-stripe-elements (needed for frontend)
+# cd server; npm install stripe (needed for strapi)
 # Log in to stripe and get test api keys (publishable key, secret key)
 #
