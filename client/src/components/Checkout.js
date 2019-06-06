@@ -58,6 +58,7 @@ class _CheckoutForm extends Component {
     // submit flow:
     // set orderProcessing to true
     // save order with strapi (which will call stripe for payment)
+    // send email
     // set orderProcessing to false
     // set showModal to false
     // clear cart
@@ -95,10 +96,21 @@ class _CheckoutForm extends Component {
         stripeToken: stripeToken
       });
 
+      // send email
+      await strapi.request('POST', '/email', {
+        data: {
+          to: email,
+          subject: `Order confirmation - ${new Date(Date.now())}`,
+          text: 'Your order has been successfully placed.',
+          html: '<bold>Your order should arrive within the next 2-3 business days.</bold>'
+        }
+      })
+
       // cleanup
       this.setState({ orderProcessing: false, showModal: false });
       clearCart();
       this.showToast("Great!!! Order successfully placed.", true);
+
     } catch (e) {
       this.setState({ orderProcessing: false, showModal: false });
       this.showToast(e.message);

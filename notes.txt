@@ -66,5 +66,13 @@ https://github.com/reedbarger/ecommerce-react-graphql-stripe
 # Stripe install as: 
 # cd  client; npm install react-stripe-elements (needed for frontend)
 # cd server; npm install stripe (needed for strapi)
-# Log in to stripe and get test api keys (publishable key, secret key)
+# Create an account with Stripe and get test api keys (publishable key, secret key)
+#
+
+#
+# For sending emails via strapi, we'll use SendGrid
+# cd server; npm install strapi-email-sendgrid@alpha
+# Create an account with SendGrid and get api keys from: https://app.sendgrid.com/guide/integrate/langs/nodejs
+# Go to plugins in strapi admin view, select email and go to settings
+# Set the SendGrid key there
 #
