@@ -49,23 +49,41 @@ class App extends Component {
   }
 
   handleSearch = (event) => {
-    this.setState({ searchTerm: event.value });
+    this.setState({ searchTerm: event.value }, () => this.searchBrands());
   }
 
-  // search the name or desc
-  filteredBrands = ({ brands, searchTerm }) => {
-    return brands.filter(brand => {
-      return (
-        brand.name.toLowerCase().includes(searchTerm.toLowerCase())
-        ||
-        brand.description.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    })
+  // search by name
+  searchBrands = async () => {
+    try {
+      const query = `query {
+        brands (where: {
+          name_contains: "${this.state.searchTerm}"
+        }) {
+          _id
+          name
+          description
+          image {
+            url
+          }
+        }
+      }`;
+
+      const response = await strapi.request('POST', '/graphql', {
+        data: {
+          query: query
+        }
+      });
+
+      this.setState({ brands: response.data.brands, loadingBrands: false });
+    } catch (e) {
+      console.log(e);
+      this.setState({ loadingBrands: false });
+    }
   }
 
   render() {
 
-    const { searchTerm, loadingBrands } = this.state;
+    const { searchTerm, loadingBrands, brands } = this.state;
 
     return (
 
@@ -98,7 +116,7 @@ class App extends Component {
         {/* All brands */}
         <Box wrap shape="rounded" display="flex" justifyContent="around" margin={2} >
           {
-            this.filteredBrands(this.state).map(brand => (
+            brands.map(brand => (
               <Box key={brand._id} margin={2} width={200}>
                 <Card image={
                   <Box height={200} width={200}>
