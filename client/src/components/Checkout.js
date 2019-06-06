@@ -70,6 +70,11 @@ class _CheckoutForm extends Component {
     // server/api/order/controllers/Order.js 
     //
 
+    //
+    // THE SEND MAIL API IN STRAPI IS MODIFIED TO WORK WITH SENDGRID
+    // server/plugins/email/controllers/Email.js 
+    //
+
     this.setState({ orderProcessing: true });
 
     const { street, city, state, zip, email, cartItems } = this.state;
