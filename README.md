@@ -2,9 +2,9 @@
 
 Online eCommerce store to sell beer using the following:
 
-- NodeJS
-- React (with getsalt library)
+- React (with gestalt library)
 - GraphQL
-- Strapi
-- Stripe
-- MongoDB Atlas
+- Strapi for GraphQL and MongoDB interfaces
+- Stripe for payments
+- SendGrid for email confirmations
+- MongoDB Atlas for backend storage
