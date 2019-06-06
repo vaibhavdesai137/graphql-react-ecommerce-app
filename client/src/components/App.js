@@ -91,7 +91,7 @@ class App extends Component {
 
         {/* Search Box */}
         <Box display="flex" justifyContent="center" marginTop={4} >
-          <SearchField id="searchField" placeholder="Search here..."
+          <SearchField id="searchField" placeholder="Search..."
             onChange={this.handleSearch}
             value={searchTerm}
             accessibilityLabel="search"
@@ -109,7 +109,7 @@ class App extends Component {
         {/* Title */}
         <Box display="flex" justifyContent="center" margin={5}>
           <Heading color="midnight" size="md">
-            Our Beer Brands
+            Beer Brands
           </Heading>
         </Box>
 

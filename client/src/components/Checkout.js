@@ -174,7 +174,7 @@ class _CheckoutForm extends Component {
               <form onSubmit={this.handleConfirmOrder} style={{
                 display: 'inlineBlock',
                 textAlign: 'center',
-                maxWidth: 450
+                maxWidth: 640
               }} >
 
                 <Box marginTop={10}>
@@ -236,7 +236,7 @@ class _CheckoutForm extends Component {
                       marginTop: "30px",
                       backgroundColor: '#4CAF50',
                       color: 'white',
-                      fontSize: '20px',
+                      fontSize: '15px',
                       height: '50px',
                       width: '400px',
                       borderRadius: '10px'

@@ -38,7 +38,7 @@ const AuthNavbar = ({ handleSignout }) => (
         <NavLink activeClassName="active" exact to="/">
             <Box display="flex" alignItems="center">
                 <Heading size="xs" color="orange">
-                    --Infamous Beer Store--
+                    Beer Store
                 </Heading>
             </Box>
         </NavLink>
@@ -62,7 +62,7 @@ const UnAuthNavbar = () => (
         <NavLink activeClassName="active" exact to="/">
             <Box display="flex" alignItems="center">
                 <Heading size="xs" color="orange">
-                    --Infamous Beer Store--
+                    Beer Store
                 </Heading>
             </Box>
         </NavLink>
