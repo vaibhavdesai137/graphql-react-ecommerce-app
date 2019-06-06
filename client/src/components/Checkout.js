@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import { Container, Box, Heading, TextField, Text } from 'gestalt';
+import { Container, Box, Heading, TextField, Text, Modal, Button, Spinner } from 'gestalt';
 import ToastMessage from './ToastMessage';
 import { setToken, getCart, calculateTotalPrice } from '../utils/helpers';
 import Strapi from 'strapi-sdk-javascript/build/main';
@@ -18,7 +18,9 @@ class Checkout extends Component {
     email: '',
     cartItems: [],
     showToast: false,
-    toastMsg: ''
+    toastMsg: '',
+    showModal: false,
+    orderProcessing: true
   }
 
   // Fetch the cart from localstoarge for checkout
@@ -31,6 +33,10 @@ class Checkout extends Component {
     this.setState({ [event.target.name]: value })
   }
 
+  closeModal = () => {
+    this.setState({ showModal: false })
+  }
+
   handleConfirmOrder = async (event) => {
 
     // no reloading of page on submit
@@ -41,23 +47,11 @@ class Checkout extends Component {
       return;
     }
 
-    // submit flow:
-    // set loading to true
-    // register user with strapi
-    // save token to local storage (to manage sessions)
-    // set loading to false
-    // redirect to homepage
-    const { street, city, state, zip, email } = this.state;
-    try {
-      this.setState({ loading: true });
-      const response = await strapi.register();
-      setToken(response.jwt);
-      this.setState({ loading: false });
-      this.redirectUser('/');
-    } catch (e) {
-      this.setState({ loading: false });
-      this.showToast(e.message);
-    }
+    this.setState({ showModal: true });
+
+  }
+
+  handleSubmitOrder = async (event) => {
 
   }
 
@@ -74,7 +68,7 @@ class Checkout extends Component {
 
   render() {
 
-    const { showToast, toastMsg, cartItems } = this.state;
+    const { showToast, toastMsg, cartItems, showModal, orderProcessing } = this.state;
 
     return (
       <Container>
@@ -85,7 +79,7 @@ class Checkout extends Component {
           <Heading size="sm" color="midnight">Checkout</Heading>
 
           {cartItems.length > 0 ?
-            
+
             <React.Fragment>
 
               {/* Cart Items */}
@@ -174,6 +168,15 @@ class Checkout extends Component {
 
         </Box>
 
+        {/* Confirmation modal */}
+        {showModal && (
+          <ConfirmationModal
+            orderProcessing={orderProcessing}
+            cartItems={cartItems}
+            closeModal={this.closeModal}
+            handleSubmitOrder={this.handleSubmitOrder} />
+        )}
+
         {/* Show alert  when errored */}
         <ToastMessage showToast={showToast} toastMsg={toastMsg} />
 
@@ -181,5 +184,57 @@ class Checkout extends Component {
     );
   }
 }
+
+const ConfirmationModal = ({ orderProcessing, cartItems, closeModal, handleSubmitOrder }) => (
+  <Modal
+    role="alertDialog"
+    size="sm"
+    accessibilityCloseLabel="close"
+    accessibilityModalLabel="Confirm your order"
+    heading="Comfirm your order"
+    onDismiss={closeModal}
+    footer={
+      <Box display="flex" marginRight={-1} marginLeft={-1} justifyContent="center">
+        <Box padding={1}>
+          <Button size="sm" color="blue" text="Place Order"
+            disabled={orderProcessing}
+            onClick={handleSubmitOrder} />
+        </Box>
+        <Box padding={1}>
+          <Button size="sm" color="red" text="Cancel Order"
+            disabled={orderProcessing}
+            onClick={closeModal} />
+        </Box>
+      </Box>
+    }
+  >
+    {/* Order summary */}
+    {!orderProcessing && (
+      <Box dispaly="flex" alignItems="center" direction="column" padding={2} justifyContent="center" color="lightWash">
+        {
+          cartItems.map(item => (
+            <Box>
+              <Box key={item._id} padding={1}>
+                <Text color="midnight">${item.price} - {item.name}</Text>
+              </Box>
+            </Box>
+          ))
+        }
+        <Box padding={2}>
+          <Text bold>Total amount: {calculateTotalPrice(cartItems)}</Text>
+        </Box>
+      </Box>
+    )}
+
+    {/* Order processing spinner */}
+    {orderProcessing && (
+      <Box>
+        <Spinner show={orderProcessing} accessibilityLabel="spinner" />
+        <Text align="center" italic>Submitting order...</Text>
+      </Box>
+    )}
+
+  </Modal>
+);
 
 export default Checkout;
