@@ -62,5 +62,10 @@ https://github.com/reedbarger/ecommerce-react-graphql-stripe
 #   - Play around with graphql at http://localhost:1337/graphql
 #
 
+#
+# Stripe install as: npm install react-stripe-elements
+# Log in to stripe and get test api keys (publishable key, secret key)
+#
+
 
 

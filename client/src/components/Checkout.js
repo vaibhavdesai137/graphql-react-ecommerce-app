@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import './App.css';
 import { Container, Box, Heading, TextField, Text, Modal, Button, Spinner } from 'gestalt';
+import { Elements, StripeProvider, CardElement, injectStripe } from 'react-stripe-elements';
 import ToastMessage from './ToastMessage';
-import { setToken, getCart, calculateTotalPrice } from '../utils/helpers';
-import Strapi from 'strapi-sdk-javascript/build/main';
+import { getCart, calculateTotalPrice } from '../utils/helpers';
+//import Strapi from 'strapi-sdk-javascript/build/main';
 
-const API_URL = process.env.API_URL || 'http://localhost:1337/';
-const strapi = new Strapi(API_URL);
+//const API_URL = process.env.API_URL || 'http://localhost:1337/';
+//const strapi = new Strapi(API_URL);
 
-class Checkout extends Component {
+class _CheckoutForm extends Component {
 
   state = {
     street: '',
@@ -155,8 +157,22 @@ class Checkout extends Component {
                   />
                 </Box>
 
+                {/* Stripe card element */}
+                <CardElement style={{paddingTop: '30px'}} id="stripe__input" onReady={input => input.focus()} />
+
                 <Box marginTop={3}>
-                  <button id="stripe__button" type="submit">Place Order</button>
+                  <button id="stripe__button" type="submit"
+                    style={{
+                      marginTop: "30px",
+                      backgroundColor: '#4CAF50',
+                      color: 'white',
+                      fontSize: '20px',
+                      height: '50px',
+                      width: '400px',
+                      borderRadius: '10px'
+                    }} >
+                    Place Order
+                    </button>
                 </Box>
 
               </form>
@@ -236,5 +252,15 @@ const ConfirmationModal = ({ orderProcessing, cartItems, closeModal, handleSubmi
 
   </Modal>
 );
+
+// Stripe stuff
+const CheckoutForm = withRouter(injectStripe(_CheckoutForm));
+const Checkout = () => (
+  <StripeProvider apiKey="pk_test_9EpJIw0Vn4iNuGF5Rky6EF1u00Eq8VjwLn">
+    <Elements>
+      <CheckoutForm />
+    </Elements>
+  </StripeProvider>
+)
 
 export default Checkout;
