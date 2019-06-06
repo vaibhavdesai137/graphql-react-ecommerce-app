@@ -9,6 +9,13 @@ export const calculateTotalPrice = (cartItems) => {
         }`;
 };
 
+export const calculateTotalPriceNumber = (cartItems) => {
+    return Number(cartItems
+        .reduce((acc, item) => acc + item.price, 0)
+        .toFixed(2)
+    );
+};
+
 // Cart: save cart
 // value = cartItems = JS array 
 // so serialize to string before saving

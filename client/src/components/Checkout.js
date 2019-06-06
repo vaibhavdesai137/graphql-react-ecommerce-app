@@ -4,11 +4,11 @@ import './App.css';
 import { Container, Box, Heading, TextField, Text, Modal, Button, Spinner } from 'gestalt';
 import { Elements, StripeProvider, CardElement, injectStripe } from 'react-stripe-elements';
 import ToastMessage from './ToastMessage';
-import { getCart, calculateTotalPrice } from '../utils/helpers';
-//import Strapi from 'strapi-sdk-javascript/build/main';
+import { getCart, calculateTotalPrice, calculateTotalPriceNumber, clearCart } from '../utils/helpers';
+import Strapi from 'strapi-sdk-javascript/build/main';
 
-//const API_URL = process.env.API_URL || 'http://localhost:1337/';
-//const strapi = new Strapi(API_URL);
+const API_URL = process.env.API_URL || 'http://localhost:1337/';
+const strapi = new Strapi(API_URL);
 
 class _CheckoutForm extends Component {
 
@@ -22,7 +22,7 @@ class _CheckoutForm extends Component {
     showToast: false,
     toastMsg: '',
     showModal: false,
-    orderProcessing: true
+    orderProcessing: false
   }
 
   // Fetch the cart from localstoarge for checkout
@@ -53,14 +53,67 @@ class _CheckoutForm extends Component {
 
   }
 
-  handleSubmitOrder = async (event) => {
+  handleSubmitOrder = async () => {
+
+    // submit flow:
+    // set orderProcessing to true
+    // save order with strapi (which will call stripe for payment)
+    // set orderProcessing to false
+    // set showModal to false
+    // clear cart
+    // show success toast
+    // redirect to homepage
+
+    //
+    // THE CREATE ORDER API IN STRAPI IS MODIFIED TO WORK WITH STRIPE
+    // server/api/order/controllers/Order.js 
+    //
+
+    this.setState({ orderProcessing: true });
+
+    const { street, city, state, zip, email, cartItems } = this.state;
+    let stripeToken;
+
+    try {
+
+      // get stripe token
+      const stripeResponse = await this.props.stripe.createToken();
+      stripeToken = stripeResponse.token.id;
+
+      // final amount in number
+      const amount = calculateTotalPriceNumber(cartItems);
+
+      // save order with strapi (pass the stripe token)
+      await strapi.createEntry('orders', {
+        street: street,
+        city: city,
+        state: state,
+        zip: zip,
+        email: email,
+        brews: cartItems,
+        amount: amount,
+        stripeToken: stripeToken
+      });
+
+      // cleanup
+      this.setState({ orderProcessing: false, showModal: false });
+      clearCart();
+      this.showToast("Great!!! Order successfully placed.", true);
+    } catch (e) {
+      this.setState({ orderProcessing: false, showModal: false });
+      this.showToast(e.message);
+    }
 
   }
 
-  showToast = (msg) => {
+  // If redirect is true (only after order placed), then redirect to homepage
+  showToast = (msg, redirect = false) => {
     this.setState({ showToast: true, toastMsg: msg });
     setTimeout(() => {
-      this.setState({ showToast: false, toastMsg: '' })
+      this.setState({
+        showToast: false,
+        toastMsg: ''
+      }, () => redirect && this.props.history.push('/'))
     }, 3000);
   }
 
@@ -141,7 +194,7 @@ class _CheckoutForm extends Component {
                   <TextField
                     id="zip"
                     name="zip"
-                    type="number"
+                    type="text"
                     placeholder="Zipcode"
                     onChange={this.handleChange}
                   />
@@ -158,7 +211,7 @@ class _CheckoutForm extends Component {
                 </Box>
 
                 {/* Stripe card element */}
-                <CardElement style={{paddingTop: '30px'}} id="stripe__input" onReady={input => input.focus()} />
+                <CardElement style={{ paddingTop: '30px' }} id="stripe__input" onReady={input => input.focus()} />
 
                 <Box marginTop={3}>
                   <button id="stripe__button" type="submit"
@@ -187,6 +240,7 @@ class _CheckoutForm extends Component {
         {/* Confirmation modal */}
         {showModal && (
           <ConfirmationModal
+            key="confirmModal"
             orderProcessing={orderProcessing}
             cartItems={cartItems}
             closeModal={this.closeModal}
@@ -203,7 +257,7 @@ class _CheckoutForm extends Component {
 
 const ConfirmationModal = ({ orderProcessing, cartItems, closeModal, handleSubmitOrder }) => (
   <Modal
-    role="alertDialog"
+    role="alertdialog"
     size="sm"
     accessibilityCloseLabel="close"
     accessibilityModalLabel="Confirm your order"
@@ -237,7 +291,7 @@ const ConfirmationModal = ({ orderProcessing, cartItems, closeModal, handleSubmi
           ))
         }
         <Box padding={2}>
-          <Text bold>Total amount: {calculateTotalPrice(cartItems)}</Text>
+          <Text bold>Total amount: ${calculateTotalPrice(cartItems)}</Text>
         </Box>
       </Box>
     )}
